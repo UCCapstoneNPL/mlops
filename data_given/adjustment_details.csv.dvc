@@ -1,0 +1,4 @@
+outs:
+- md5: 6a4738514c6fcdd9710a174da71fdf43
+  size: 109934482
+  path: adjustment_details.csv
