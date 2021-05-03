@@ -1,0 +1,19 @@
+base:
+    project: adc-npl-project
+    random_state: 0
+    target_col: TARGET
+
+data_source:
+    gd_source: data_given/
+
+load_data:
+    raw_dataset_csv: 
+
+split_data:
+    train_path:
+    test_path:
+    test_size: 0.2
+
+estimators:
+    
+model_dir: saved_models
