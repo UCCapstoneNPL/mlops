@@ -8,3 +8,4 @@ xgboost
 imblearn
 tox
 pytest
+flake8
