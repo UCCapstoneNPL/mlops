@@ -1,19 +1,33 @@
 base:
     project: adc-npl-project
     random_state: 0
-    target_col: TARGET
+    target_col: SalesSuccess
 
 data_source:
-    gd_source: data_given/
+    gd_source_im: data_given/item_movement.csv
+    gd_source_ad: data_given/adjustment_details.csv
 
 load_data:
-    raw_dataset_csv: 
+    raw_dataset_im: data/raw/item_movement.pkl
+    raw_dataset_ad: data/raw/adjustment_details.pkl
+
+preprocess_data:
+    success_percentile: 90
+    predictor_weeks: 4
+    porcessed_temp: data/processed/item_mvmt.pkl
+    processed_data: data/processed/item_master_4_model_final.csv
 
 split_data:
-    train_path:
-    test_path: 
+    train_path: data/processed/train.csv
+    test_path: data/processed/test.csv
     test_size: 0.25
 
 estimators:
+    XGBoost:
+        params:
+            n_estimators: list(np.arange(5, 10, 1))
+            learning_rate: list(np.arange(0.01, 1.7, 0.01))
+            max_depth: [1, 2]
+            gamma: list(np.arange(0.00, 5.10, 0.25))
     
 model_dir: saved_models

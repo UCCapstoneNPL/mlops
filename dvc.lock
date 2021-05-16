@@ -1,0 +1,55 @@
+schema: '2.0'
+stages:
+  preprocess_data:
+    cmd: python src/preprocess_data.py --config=params.yaml
+    deps:
+    - path: data_given/adjustment_details.csv
+      md5: 6a4738514c6fcdd9710a174da71fdf43
+      size: 109934482
+    - path: data_given/item_movement.csv
+      md5: 3c846919188d8fd8d04c68207c4c2531
+      size: 1737653554
+    - path: src/get_data.py
+      md5: ba66d01a20304c8136ce20210937a512
+      size: 897
+    - path: src/preprocess_data.py
+      md5: eacd43b1db0bab1b7ee7a323840e104e
+      size: 9439
+    outs:
+    - path: data/raw/adjustment_details.pkl
+      md5: c182dd7d8d3572efd769440819cbfd48
+      size: 134421998
+    - path: data/raw/item_movement.pkl
+      md5: 6f3ef9cc4c43a35eafc5ec03c42c2dda
+      size: 1940755741
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - path: data/raw/adjustment_details.pkl
+      md5: c182dd7d8d3572efd769440819cbfd48
+      size: 134421998
+    - path: data/raw/item_movement.pkl
+      md5: 6f3ef9cc4c43a35eafc5ec03c42c2dda
+      size: 1940755741
+    - path: src/split_data.py
+      md5: 9aa7cedbe3242beb0a0d570c4e7f9872
+      size: 1194
+    outs:
+    - path: data/processed/test.csv
+      md5: 6fefb7900b4a9c6111d99bf726ecf643
+      size: 1398
+    - path: data/processed/train.csv
+      md5: 85d8a2a26ad0e5cdda58e11e911a1a1f
+      size: 3442
+  train_and_evaluate:
+    cmd: python src/train_and_evaluate.py --config=params.yaml
+    deps:
+    - path: data/processed/test.csv
+      md5: 6fefb7900b4a9c6111d99bf726ecf643
+      size: 1398
+    - path: data/processed/train.csv
+      md5: 85d8a2a26ad0e5cdda58e11e911a1a1f
+      size: 3442
+    - path: src/train_and_evaluate.py
+      md5: 613c4b89281caaf40972de26ac0a72a1
+      size: 3273
