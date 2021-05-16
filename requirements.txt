@@ -6,4 +6,5 @@ pandas
 sklearn
 xgboost
 imblearn
-collections
+tox
+pytest

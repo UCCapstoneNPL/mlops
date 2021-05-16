@@ -76,7 +76,6 @@ def train_and_evaluate(config_path):
     print("  ROC_AUC: %s" % roc_auc)
 
     scores_file = config["reports"]["scores"]
-    # params_file = config["reports"]["params"]
 
     with open(scores_file, "w") as f:
         scores = {
@@ -84,11 +83,6 @@ def train_and_evaluate(config_path):
             "roc_auc": roc_auc
         }
         json.dump(scores, f, indent=4)
-
-    # with open(params_file, "w") as f:
-    #     params = {
-    #     }
-    #     json.dump(params, f, indent=4)
 
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "model.joblib")
