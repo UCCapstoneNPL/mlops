@@ -28,3 +28,15 @@ stages:
     - src/train_and_evaluate.py
     - data/processed/train.csv
     - data/processed/test.csv
+    params:
+    - estimators.XGBoost.params.n_estimators
+    - estimators.XGBoost.params.learning_rate
+    - estimators.XGBoost.params.max_depth
+    - estimators.XGBoost.params.gamma
+    metrics:
+    - report/scores.json:
+        cache: false
+    - report/params.json:
+        cache: false
+    outs: 
+    - saved_models/model.joblib

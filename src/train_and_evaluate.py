@@ -6,6 +6,8 @@ import argparse
 import os
 import pandas as pd
 import numpy as np
+import joblib
+import json
 
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, plot_confusion_matrix, \
@@ -73,12 +75,25 @@ def train_and_evaluate(config_path):
     print("  Accuracy: %s" % accuracy)
     print("  ROC_AUC: %s" % roc_auc)
 
-    y_train_pred = xgb_rand_bm.predict(X_train)
-    (accuracy_train, roc_auc_train) = eval_metrics(y_train, y_train_pred)
+    scores_file = config["reports"]["scores"]
+    # params_file = config["reports"]["params"]
 
-    print("XGBoost Model - Train")
-    print("  Accuracy: %s" % accuracy_train)
-    print("  ROC_AUC: %s" % roc_auc_train)
+    with open(scores_file, "w") as f:
+        scores = {
+            "accuracy": accuracy,
+            "roc_auc": roc_auc
+        }
+        json.dump(scores, f, indent=4)
+
+    # with open(params_file, "w") as f:
+    #     params = {
+    #     }
+    #     json.dump(params, f, indent=4)
+
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, "model.joblib")
+
+    joblib.dump(xgb_rand_bm, model_path)
 
 
 if __name__ == "__main__":

@@ -31,3 +31,7 @@ estimators:
             gamma: list(np.arange(0.00, 5.10, 0.25))
     
 model_dir: saved_models
+
+reports:
+    params: report/params.json
+    scores: report/scores.json
