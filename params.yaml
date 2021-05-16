@@ -25,9 +25,11 @@ split_data:
 estimators:
     XGBoost:
         params:
-            n_estimators: list(np.arange(5, 10, 1))
+            # n_estimators: list(np.arange(5, 10, 1))
+            n_estimators: list(np.arange(5, 20, 1))
             learning_rate: list(np.arange(0.01, 1.7, 0.01))
-            max_depth: [1, 2]
+            # max_depth: [1, 2]
+            max_depth: [1, 2, 3]
             gamma: list(np.arange(0.00, 5.10, 0.25))
     
 model_dir: saved_models
