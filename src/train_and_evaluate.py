@@ -69,6 +69,11 @@ def train_and_evaluate(config_path):
     xgb_rand_bm = xgb_rand_fit.best_estimator_
 
     y_test_pred = xgb_rand_bm.predict(X_test)
+    data = [[400, 400, 400, 400, 300, 300, 300, 300]]
+    data_array = np.array(data)
+    # sample_check = xgb_rand_bm.predict([[400, 400, 400, 400, 300, 300, 300, 300]])
+    sample_check = xgb_rand_bm.predict(data_array)    
+    print(sample_check)
     (accuracy, roc_auc) = eval_metrics(y_test, y_test_pred)
 
     print("XGBoost Model - Test")
