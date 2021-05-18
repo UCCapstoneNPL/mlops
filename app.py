@@ -24,7 +24,12 @@ def predict(data):
     model_dir_path = config["webapp_model_dir"]
     model = joblib.load(model_dir_path)
     prediction = model.predict(data)
-    return prediction[0]
+    print(prediction)
+    if prediction[0] == 1:
+        prediction_text = "Success"
+    else:
+        prediction_text = "Failure"
+    return prediction_text
     # prediction = model.predict(data).tolist()[0]
     # try:
     #     if 3 <= prediction <= 8:

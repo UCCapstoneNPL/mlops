@@ -23,12 +23,11 @@ split_data:
     test_size: 0.25
 
 estimators:
-    XGBoost:
+    random_forest:
         params:
-            n_estimators: list(np.arange(5, 10, 1))
-            learning_rate: list(np.arange(0.01, 1.7, 0.01))
+            n_estimators: list(np.arange(5, 11, 1))
+            max_features: [1, 2, 'sqrt']
             max_depth: [1, 2]
-            gamma: list(np.arange(0.00, 5.10, 0.25))
     
 model_dir: saved_models
 

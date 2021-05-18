@@ -13,7 +13,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, plot_confusion_matrix, \
                             precision_recall_curve, plot_precision_recall_curve, average_precision_score, \
                             accuracy_score, roc_curve, roc_auc_score
-import xgboost as xgb
+from sklearn.ensemble import RandomForestClassifier
 from collections import Counter
 
 from get_data import read_params
@@ -31,10 +31,9 @@ def train_and_evaluate(config_path):
     random_state = config["base"]["random_state"]
     model_dir = config["model_dir"]
 
-    n_estimators = config["estimators"]["XGBoost"]["params"]["n_estimators"]
-    learning_rate = config["estimators"]["XGBoost"]["params"]["learning_rate"]
-    max_depth = config["estimators"]["XGBoost"]["params"]["max_depth"]
-    gamma = config["estimators"]["XGBoost"]["params"]["gamma"]
+    n_estimators = config["estimators"]["random_forest"]["params"]["n_estimators"]
+    max_features = config["estimators"]["random_forest"]["params"]["max_features"]
+    max_depth = config["estimators"]["random_forest"]["params"]["max_depth"]
 
     target = [config["base"]["target_col"]]
 
@@ -49,36 +48,35 @@ def train_and_evaluate(config_path):
     y_test = test[target]
 
     n_estimators = eval(n_estimators) 
-    learning_rate = eval(learning_rate)
-    gamma = eval(gamma)
 
-    # Create an instance of XGBoost
-    y_count = y_train.value_counts()
-    ratio = (y_count[0] / y_count[1])
-    xgb_obj = xgb.XGBClassifier(random_state=random_state, scale_pos_weight=ratio, use_label_encoder=False)
-    xgb_param = {'n_estimators': n_estimators,
-                 'learning_rate': learning_rate,
-                 'max_depth': max_depth,
-                 'gamma': gamma,
-                }
+    # Create an instance of Random Forest
+    rf_obj = RandomForestClassifier(class_weight={0:1, 1:8.3})
+ 
+    # Create param_grid for RandomizedSearchCV
+    param_rand = {'n_estimators': n_estimators,
+             'max_features': max_features,
+             'max_depth': max_depth
+             }
+             
     # Randomized Serach CV
-    xgb_rand = RandomizedSearchCV(xgb_obj, xgb_param, cv=5, scoring='accuracy', refit=True, n_jobs=-1, verbose=5, random_state=random_state)
-    # Model fit
-    xgb_rand_fit = xgb_rand.fit(X_train, y_train)
-    # Best estimator
-    xgb_rand_bm = xgb_rand_fit.best_estimator_
+    rf_rand = RandomizedSearchCV(rf_obj, param_rand, cv=5, scoring='accuracy', refit=True, n_jobs=-1, verbose=5, random_state=random_state)
 
-    y_test_pred = xgb_rand_bm.predict(X_test)
+    # Model fit
+    rf_rand_fit = rf_rand.fit(X_train, y_train)
+    # Best estimator
+    rf_rand_bm = rf_rand_fit.best_estimator_
+
+    y_test_pred = rf_rand_bm.predict(X_test)
     (accuracy, roc_auc) = eval_metrics(y_test, y_test_pred)
 
-    print("XGBoost Model - Test")
+    print("Random Forest Model - Test")
     print("  Accuracy: %s" % accuracy)
     print("  ROC_AUC: %s" % roc_auc)
 
-    y_train_pred = xgb_rand_bm.predict(X_train)
+    y_train_pred = rf_rand_bm.predict(X_train)
     (accuracy_train, roc_auc_train) = eval_metrics(y_train, y_train_pred)
 
-    print("XGBoost Model - Test")
+    print("Random Forest Model - Train")
     print("  Accuracy: %s" % accuracy_train)
     print("  ROC_AUC: %s" % roc_auc_train)
 
@@ -94,7 +92,7 @@ def train_and_evaluate(config_path):
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "model.joblib")
 
-    joblib.dump(xgb_rand_bm, model_path)
+    joblib.dump(rf_rand_bm, model_path)
 
 
 if __name__ == "__main__":
