@@ -51,8 +51,8 @@ stages:
       md5: 85d8a2a26ad0e5cdda58e11e911a1a1f
       size: 3442
     - path: src/train_and_evaluate.py
-      md5: 541b4a2bc9377c5241d63e9542a6e1eb
-      size: 3422
+      md5: bccfe4fd4ed67d814ef668a094be3c69
+      size: 3675
     params:
       params.yaml:
         estimators.XGBoost.params.gamma: list(np.arange(0.00, 5.10, 0.25))
@@ -60,12 +60,11 @@ stages:
         estimators.XGBoost.params.max_depth:
         - 1
         - 2
-        - 3
-        estimators.XGBoost.params.n_estimators: list(np.arange(5, 20, 1))
+        estimators.XGBoost.params.n_estimators: list(np.arange(5, 10, 1))
     outs:
     - path: report/scores.json
-      md5: 4d12e1f37373787d2d0f24f22ef47e6d
-      size: 76
+      md5: 5103497469109ec88d58d6f39e128fd0
+      size: 46
     - path: saved_models/model.joblib
-      md5: cee1a6889262ccc7e610195aa5714bde
-      size: 10744
+      md5: 507bca8df77f780f3242fd7f41ca36f3
+      size: 7265

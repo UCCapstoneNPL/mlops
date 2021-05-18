@@ -75,6 +75,13 @@ def train_and_evaluate(config_path):
     print("  Accuracy: %s" % accuracy)
     print("  ROC_AUC: %s" % roc_auc)
 
+    y_train_pred = xgb_rand_bm.predict(X_train)
+    (accuracy_train, roc_auc_train) = eval_metrics(y_train, y_train_pred)
+
+    print("XGBoost Model - Test")
+    print("  Accuracy: %s" % accuracy_train)
+    print("  ROC_AUC: %s" % roc_auc_train)
+
     scores_file = config["reports"]["scores"]
 
     with open(scores_file, "w") as f:
