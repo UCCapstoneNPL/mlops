@@ -10,7 +10,7 @@ params_path = "params.yaml"
 schema_path = os.path.join("prediction_service", "schema_in.json")
 
 class NotInRange(Exception):
-    def __init__(self, message="Values entered are not in range"):
+    def __init__(self, message="Values entered are not in range, please retrain the model."):
         self.message = message
         super().__init__(self.message)
 
