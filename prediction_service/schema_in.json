@@ -1,0 +1,34 @@
+{
+    "QuantitySold_Week1": {
+        "min":300.0,
+        "max":6000.0
+        },
+    "QuantitySold_Week2": {
+        "min":300.0,
+        "max":6000.0
+    },
+    "QuantitySold_Week3": {
+        "min":300.0,
+        "max":6000.0
+    },
+    "QuantitySold_Week4": {
+        "min":300.0,
+        "max":6000.0
+    },
+    "AdjustmentAmount_Week1": {
+        "min":200.0,
+        "max":500.0
+    },
+    "AdjustmentAmount_Week2": {
+        "min":200.0,
+        "max":500.0
+    },
+    "AdjustmentAmount_Week3": {
+        "min":200.0,
+        "max":500.0
+    },
+    "AdjustmentAmount_Week4": {
+        "min":200.0,
+        "max":500.0
+    }
+}
